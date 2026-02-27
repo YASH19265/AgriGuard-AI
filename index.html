@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriGuard AI – Crop Health & Pathogen Detection Platform</title>
+    <meta name="description"
+        content="AgriGuard AI helps farmers monitor crop health, detect bacterial pathogens early, and optimize yields with satellite-powered AI technology." />
+    <meta name="keywords"
+        content="AgriGuard AI, crop health monitoring, bacterial detection, precision agriculture, AI farming, yield optimization" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        forest: {
+                            950: '#071a11',
+                            900: '#0d2b1e',
+                            800: '#1B4332',
+                            700: '#2d6a4f',
+                            600: '#40916c',
+                            500: '#52b788',
+                            400: '#74c69d',
+                            300: '#95d5b2',
+                        },
+                        orange: {
+                            action: '#FF8C00',
+                            hover: '#e07b00',
+                            light: '#fff3e0',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp 0.7s ease-out both',
+                        'fade-in': 'fadeIn 0.6s ease-out both',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4,0,0.6,1) infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                        'scan-line': 'scanLine 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeUp: {
+                            '0%': { opacity: '0', transform: 'translateY(28px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        scanLine: {
+                            '0%': { top: '0%' },
+                            '50%': { top: '100%' },
+                            '100%': { top: '0%' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="bg-forest-950 text-white font-sans antialiased grain">
+
+    <!-- ===================== HEADER ===================== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <nav class="flex items-center justify-between h-20">
+
+                <!-- Logo -->
+                <a href="#hero" class="flex items-center gap-3 group" aria-label="AgriGuard AI Home">
+                    <div
+                        class="w-9 h-9 rounded-xl bg-forest-700 flex items-center justify-center shadow-lg group-hover:bg-forest-600 transition-colors duration-200">
+                        <svg class="w-5 h-5 text-forest-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2-8 2S12 3 17 8Z" />
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold tracking-tight">AgriGuard<span
+                            class="text-forest-500">AI</span></span>
+                </a>
+
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex items-center gap-10">
+                    <a href="#scan"
+                        class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Scan
+                        Crop</a>
+                    <a href="#dashboard"
+                        class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Dashboard</a>
+                    <a href="#features"
+                        class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Features</a>
+                    <a href="#stats"
+                        class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Impact</a>
+                    <a href="#contact"
+                        class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Contact</a>
+                </div>
+
+                <!-- CTA + Mobile Menu -->
+                <div class="flex items-center gap-4">
+                    <a href="#scan"
+                        class="hidden md:inline-flex btn-action items-center gap-2 px-5 py-2.5 rounded-lg bg-orange-action text-white text-sm font-semibold">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M7 4v16M17 4v16M3 8h4m10 0h4M3 16h4m10 0h4M4 20h16a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1Z" />
+                        </svg>
+                        Scan My Crop
+                    </a>
+                    <button id="menu-toggle" class="md:hidden p-2 rounded-lg hover:bg-forest-700 transition-colors"
+                        aria-label="Open menu">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-card border-t border-white/5 px-6 pb-6 pt-4 space-y-4">
+            <a href="#scan"
+                class="block text-sm font-medium text-gray-300 hover:text-white py-2 border-b border-white/5">Scan
+                Crop</a>
+            <a href="#dashboard"
+                class="block text-sm font-medium text-gray-300 hover:text-white py-2 border-b border-white/5">Dashboard</a>
+            <a href="#features"
+                class="block text-sm font-medium text-gray-300 hover:text-white py-2 border-b border-white/5">Features</a>
+            <a href="#stats"
+                class="block text-sm font-medium text-gray-300 hover:text-white py-2 border-b border-white/5">Impact</a>
+            <a href="#contact" class="block text-sm font-medium text-gray-300 hover:text-white py-2">Contact</a>
+            <a href="#scan"
+                class="btn-action inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-orange-action text-white text-sm font-semibold mt-2">
+                Scan My Crop
+            </a>
+        </div>
+    </header>
+
+    <!-- ===================== HERO ===================== -->
+    <section class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20" id="hero">
+
+        <!-- Background grid -->
+        <div class="absolute inset-0 opacity-10 hero-bg-grid"></div>
+
+        <!-- Ambient orbs -->
+        <div class="orb orb-1 w-96 h-96 bg-forest-600 top-20 -left-20"></div>
+        <div class="orb orb-2 w-80 h-80 bg-forest-500 bottom-20 right-10"></div>
+        <div class="orb orb-3 w-64 h-64 bg-orange-action top-1/2 left-1/2 -translate-x-1/2"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8 animate-fade-in delay-1">
+                <span class="pulse-dot"></span>
+                <span class="text-xs font-semibold text-forest-400 tracking-widest uppercase">AI-Powered Precision
+                    Agriculture</span>
+            </div>
+
+            <!-- Headline -->
+            <h1
+                class="text-5xl sm:text-6xl lg:text-7xl font-black leading-tight tracking-tight mb-6 animate-fade-up delay-2">
+                The Future of Farming<br class="hidden sm:block" />
+                <span class="hero-gradient-text">is Data-Driven.</span>
+            </h1>
+
+            <!-- Sub-headline -->
+            <p
+                class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-10 animate-fade-up delay-35">
+                AgriGuard AI empowers farmers to monitor crop health in real time, detect harmful bacteria before they
+                spread, and unlock maximum yield — all from a single intelligent platform.
+            </p>
+
+            <!-- CTAs -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up delay-5">
+                <a href="#scan" id="hero-scan-btn"
+                    class="btn-action inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-orange-action text-white font-bold text-base shadow-xl">
+                    Scan My Crop Now
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
+                </a>
+                <a href="#dashboard"
+                    class="inline-flex items-center gap-2 px-8 py-4 rounded-xl border border-forest-600 text-forest-400 font-semibold text-base hover:border-forest-500 hover:text-white transition-colors duration-200">
+                    View Live Dashboard
+                </a>
+            </div>
+
+            <!-- Trusted by badge -->
+            <p class="mt-12 text-xs text-gray-600 tracking-wider uppercase animate-fade-in delay-7">
+                Trusted by 1,200+ farms across 18 countries
+            </p>
+        </div>
+
+        <!-- Scroll cue -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 scroll-indicator text-gray-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
+        </div>
+    </section>
+
+    <!-- ===================== SCAN MY CROP ===================== -->
+    <section id="scan" class="py-28 relative">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-forest-700 to-transparent">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+            <!-- Section label -->
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <div class="flex items-center justify-center gap-3 mb-4">
+                    <div class="w-8 h-px bg-orange-action"></div>
+                    <span class="text-xs font-semibold text-orange-action tracking-widest uppercase">AI Diagnostic
+                        Tool</span>
+                    <div class="w-8 h-px bg-orange-action"></div>
+                </div>
+                <h2 class="text-4xl sm:text-5xl font-black mb-4">
+                    Scan My <span class="text-orange-action">Crop</span>
+                </h2>
+                <p class="text-gray-400 text-lg">Upload a photo of your leaf or crop. Our AI engine will analyze it for
+                    bacterial risk, disease markers, and overall health — in seconds.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-10 items-start">
+
+                <!-- Upload Zone -->
+                <div>
+                    <div id="drop-zone"
+                        class="drop-zone glass-card rounded-3xl border-2 border-dashed border-forest-700 p-10 text-center cursor-pointer transition-all duration-300 relative overflow-hidden">
+                        <!-- Scan line animation (hidden until scanning) -->
+                        <div id="scan-line" class="scan-line hidden"></div>
+
+                        <div id="upload-prompt">
+                            <div
+                                class="w-20 h-20 rounded-2xl bg-forest-800 flex items-center justify-center mx-auto mb-5 border border-forest-700/50">
+                                <svg class="w-9 h-9 text-forest-500" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2">Drop your leaf image here</h3>
+                            <p class="text-sm text-gray-500 mb-5">Supports JPG, PNG, WEBP — or click to browse</p>
+                            <button id="browse-btn"
+                                class="btn-action inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-forest-700 border border-forest-600 text-white font-semibold text-sm hover:bg-forest-600 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 15.75 7.5 10.5l4.286 4.286 5.464-6.434L21 12" />
+                                </svg>
+                                Browse Files
+                            </button>
+                            <input type="file" id="file-input" accept="image/*" class="hidden"
+                                aria-label="Upload a crop or leaf image for AI diagnosis" />
+                        </div>
+
+                        <!-- Image preview (hidden until uploaded) -->
+                        <div id="image-preview-container" class="hidden">
+                            <img id="preview-img" src="" alt="Uploaded leaf"
+                                class="max-h-64 mx-auto rounded-2xl object-cover shadow-2xl" />
+                            <p class="mt-4 text-sm text-gray-400" id="preview-filename"></p>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons row -->
+                    <div class="flex gap-3 mt-5">
+                        <button id="analyze-btn"
+                            class="btn-action flex-1 inline-flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-orange-action text-white font-bold text-base shadow-lg disabled:opacity-40 disabled:cursor-not-allowed"
+                            disabled>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23-.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+                            </svg>
+                            <span id="analyze-btn-text">Run AI Diagnosis</span>
+                        </button>
+                        <button id="reset-btn"
+                            class="hidden px-5 py-4 rounded-xl border border-forest-700 text-gray-400 hover:text-white hover:border-forest-600 transition-colors font-semibold text-sm"
+                            onclick="resetScan()">
+                            Reset
+                        </button>
+                    </div>
+
+                    <!-- Sample labels -->
+                    <div class="mt-4">
+                        <p class="text-xs text-gray-600 mb-3 uppercase tracking-wider">Or try a sample scan:</p>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="loadSample('healthy')"
+                                class="sample-btn px-3 py-1.5 rounded-lg bg-forest-800 border border-forest-700 text-xs text-forest-400 hover:border-forest-500 hover:text-white transition-colors font-medium">🌿
+                                Healthy Wheat</button>
+                            <button onclick="loadSample('bacterial')"
+                                class="sample-btn px-3 py-1.5 rounded-lg bg-forest-800 border border-forest-700 text-xs text-yellow-400 hover:border-yellow-500 hover:text-white transition-colors font-medium">⚠️
+                                Bacterial Blight</button>
+                            <button onclick="loadSample('critical')"
+                                class="sample-btn px-3 py-1.5 rounded-lg bg-forest-800 border border-forest-700 text-xs text-red-400 hover:border-red-500 hover:text-white transition-colors font-medium">🔴
+                                Fire Blight (Critical)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Panel -->
+                <div id="results-panel" class="results-panel-hidden">
+
+                    <!-- Loading state -->
+                    <div id="scan-loading"
+                        class="hidden glass-card rounded-3xl border border-forest-700/30 p-8 text-center">
+                        <div
+                            class="w-16 h-16 rounded-full border-4 border-forest-700 border-t-forest-400 animate-spin mx-auto mb-5">
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">AI is analyzing your crop…</h3>
+                        <p id="loading-step" class="text-sm text-gray-500">Initializing neural network…</p>
+                        <div class="mt-5 w-full h-1.5 bg-forest-900 rounded-full overflow-hidden">
+                            <div id="loading-bar"
+                                class="h-full bg-gradient-to-r from-forest-600 to-orange-action rounded-full transition-all duration-700 loading-bar-init">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results (hidden until complete) -->
+                    <div id="scan-results" class="hidden space-y-5">
+
+                        <!-- Report header -->
+                        <div class="glass-card rounded-3xl border border-forest-700/30 p-6">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-xs font-semibold text-forest-400 tracking-widest uppercase">AI Health
+                                    Report</span>
+                                <span id="report-timestamp" class="text-xs text-gray-600 font-mono"></span>
+                            </div>
+                            <h3 id="report-title" class="text-2xl font-black text-white"></h3>
+                            <p id="report-subtitle" class="text-sm text-gray-400 mt-1"></p>
+                        </div>
+
+                        <!-- Key metrics -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <!-- Crop Health Index -->
+                            <div class="glass-card rounded-2xl border border-forest-700/30 p-5">
+                                <p class="text-xs text-gray-500 mb-1">Crop Health Index</p>
+                                <p class="text-4xl font-black" id="health-score-display"></p>
+                                <div class="mt-3 w-full h-2 bg-forest-900 rounded-full overflow-hidden">
+                                    <div id="health-bar"
+                                        class="h-full rounded-full transition-all duration-1000 bar-init"></div>
+                                </div>
+                                <p id="health-label" class="text-xs mt-2 font-semibold"></p>
+                            </div>
+
+                            <!-- Bacterial Risk -->
+                            <div class="glass-card rounded-2xl border border-forest-700/30 p-5">
+                                <p class="text-xs text-gray-500 mb-1">Bacterial Risk</p>
+                                <p class="text-4xl font-black" id="bacterial-risk-display"></p>
+                                <div class="mt-3 w-full h-2 bg-forest-900 rounded-full overflow-hidden">
+                                    <div id="bacterial-bar"
+                                        class="h-full rounded-full transition-all duration-1000 bar-init"></div>
+                                </div>
+                                <p id="bacterial-label" class="text-xs mt-2 font-semibold"></p>
+                            </div>
+                        </div>
+
+                        <!-- Detected pathogens -->
+                        <div class="glass-card rounded-2xl border border-forest-700/30 p-5">
+                            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Detected
+                                Signals</p>
+                            <ul id="pathogen-list" class="space-y-3">
+                                <!-- Filled by JS -->
+                            </ul>
+                        </div>
+
+                        <!-- Recommendations -->
+                        <div class="glass-card rounded-2xl border border-orange-action/20 p-5">
+                            <div class="flex items-center gap-2 mb-4">
+                                <svg class="w-4 h-4 text-orange-action" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z" />
+                                </svg>
+                                <p class="text-xs font-semibold text-orange-action uppercase tracking-wider">AI
+                                    Recommendations</p>
+                            </div>
+                            <ul id="recommendation-list" class="space-y-2">
+                                <!-- Filled by JS -->
+                            </ul>
+                        </div>
+
+                        <!-- CTA: View in Dashboard -->
+                        <button onclick="viewInDashboard()"
+                            class="btn-action w-full inline-flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-forest-700 border border-forest-600 text-white font-bold text-sm hover:bg-forest-600 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.148 2.148A12.061 12.061 0 0 1 16.5 7.605" />
+                            </svg>
+                            View Results in Live Dashboard
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== LIVE DASHBOARD ===================== -->
+    <section id="dashboard" class="py-28 relative">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-forest-700 to-transparent">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+            <!-- Section header -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-12 gap-4">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-8 h-px bg-forest-500"></div>
+                        <span class="text-xs font-semibold text-forest-500 tracking-widest uppercase">Live
+                            Dashboard</span>
+                    </div>
+                    <h2 class="text-4xl sm:text-5xl font-black">
+                        Farm Intelligence <span class="text-forest-500">Hub</span>
+                    </h2>
+                </div>
+                <div class="flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-forest-700/30">
+                    <span class="pulse-dot"></span>
+                    <span class="text-xs font-semibold text-forest-400">Live · Updated just now</span>
+                </div>
+            </div>
+
+            <!-- Top KPI row -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+
+                <div class="stat-kpi glass-card rounded-2xl p-6 border border-forest-700/30">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-xs text-gray-500 uppercase tracking-wider">Crop Health Index</p>
+                        <div class="w-8 h-8 rounded-lg bg-forest-800 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-forest-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-4xl font-black" id="dash-health-index">91<span
+                            class="text-lg font-normal text-gray-500">/100</span></p>
+                    <p class="text-xs text-forest-400 mt-2 font-semibold" id="dash-health-label">● Excellent</p>
+                </div>
+
+                <div class="stat-kpi glass-card rounded-2xl p-6 border border-forest-700/30">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-xs text-gray-500 uppercase tracking-wider">Bacterial Risk</p>
+                        <div class="w-8 h-8 rounded-lg bg-forest-800 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-forest-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-4xl font-black" id="dash-bacterial-risk">Low<span
+                            class="text-xl font-normal text-gray-500 ml-2" id="dash-bacterial-pct">2.1%</span></p>
+                    <p class="text-xs text-green-400 mt-2 font-semibold" id="dash-bacterial-label">● No active threat
+                    </p>
+                </div>
+
+                <div class="stat-kpi glass-card rounded-2xl p-6 border border-forest-700/30">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-xs text-gray-500 uppercase tracking-wider">Yield Forecast</p>
+                        <div class="w-8 h-8 rounded-lg bg-forest-800 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-orange-action" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-4xl font-black text-orange-action" id="dash-yield">+18<span
+                            class="text-lg font-normal text-gray-500">%</span></p>
+                    <p class="text-xs text-gray-500 mt-2" id="dash-yield-label">vs. last season avg.</p>
+                </div>
+
+                <div class="stat-kpi glass-card rounded-2xl p-6 border border-forest-700/30">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-xs text-gray-500 uppercase tracking-wider">Scans Today</p>
+                        <div class="w-8 h-8 rounded-lg bg-forest-800 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-forest-400" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M7 4v16M17 4v16M3 8h4m10 0h4M3 16h4m10 0h4" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-4xl font-black text-white" id="dash-scans">0</p>
+                    <p class="text-xs text-gray-500 mt-2" id="dash-scans-label">This session</p>
+                </div>
+
+            </div>
+
+            <!-- Main dashboard grid: chart + activity log -->
+            <div class="grid lg:grid-cols-3 gap-6">
+
+                <!-- Health History Chart (col span 2) -->
+                <div class="lg:col-span-2 glass-card rounded-3xl border border-forest-700/30 p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Health Index History</p>
+                            <p class="text-lg font-bold text-white">Last 7 Days</p>
+                        </div>
+                        <div class="flex items-center gap-4 text-xs text-gray-500">
+                            <span class="flex items-center gap-1.5"><span
+                                    class="w-2.5 h-2.5 rounded-full bg-forest-500 inline-block"></span>Healthy</span>
+                            <span class="flex items-center gap-1.5"><span
+                                    class="w-2.5 h-2.5 rounded-full bg-orange-action inline-block"></span>At Risk</span>
+                        </div>
+                    </div>
+                    <div class="chart-container h-44 flex items-end gap-2">
+                        <!-- Bars generated by JS -->
+                    </div>
+                    <div class="flex justify-between mt-2 text-xs text-gray-600">
+                        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Today</span>
+                    </div>
+                </div>
+
+                <!-- Activity Log -->
+                <div class="glass-card rounded-3xl border border-forest-700/30 p-6">
+                    <p class="text-xs text-gray-500 uppercase tracking-wider mb-5">Activity Log</p>
+                    <ul id="activity-log" class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <div class="w-1.5 h-1.5 rounded-full bg-forest-500 mt-1.5 flex-shrink-0"></div>
+                            <div>
+                                <p class="text-sm text-gray-300 font-medium">System initialized</p>
+                                <p class="text-xs text-gray-600 mt-0.5">Dashboard ready · awaiting scan</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Field Status Table -->
+            <div class="mt-6 glass-card rounded-3xl border border-forest-700/30 p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <p class="text-lg font-bold text-white">Field Status</p>
+                    <span class="text-xs text-gray-500">Auto-updated from satellite</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm" id="field-table">
+                        <thead>
+                            <tr class="border-b border-forest-800">
+                                <th class="text-left text-xs text-gray-500 uppercase tracking-wider pb-3 font-medium">
+                                    Field</th>
+                                <th class="text-left text-xs text-gray-500 uppercase tracking-wider pb-3 font-medium">
+                                    Crop</th>
+                                <th class="text-left text-xs text-gray-500 uppercase tracking-wider pb-3 font-medium">
+                                    Health</th>
+                                <th class="text-left text-xs text-gray-500 uppercase tracking-wider pb-3 font-medium">
+                                    Bacterial Risk</th>
+                                <th class="text-left text-xs text-gray-500 uppercase tracking-wider pb-3 font-medium">
+                                    Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="field-table-body">
+                            <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===================== FEATURES ===================== -->
+    <section id="features" class="py-28 relative">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-forest-700 to-transparent">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <div class="flex items-center justify-center gap-3 mb-4">
+                    <div class="w-8 h-px bg-forest-500"></div>
+                    <span class="text-xs font-semibold text-forest-500 tracking-widest uppercase">Core Features</span>
+                    <div class="w-8 h-px bg-forest-500"></div>
+                </div>
+                <h2 class="text-4xl sm:text-5xl font-black mb-4">
+                    Everything Your Farm<br>Needs to <span class="text-forest-500">Thrive</span>
+                </h2>
+                <p class="text-gray-400 text-lg">Three pillars of intelligent agriculture — working together seamlessly.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+
+                <!-- Card 1 -->
+                <article class="feature-card glass-card rounded-3xl p-8 border border-white/5">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-forest-800 flex items-center justify-center mb-6 border border-forest-700/50">
+                        <svg class="w-7 h-7 text-forest-400" fill="none" stroke="currentColor" stroke-width="1.5"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                        </svg>
+                    </div>
+                    <div class="text-xs font-semibold text-orange-action tracking-widest uppercase mb-3">01 — Satellite
+                        Monitoring</div>
+                    <h3 class="text-xl font-bold mb-3">Field-Level Visibility from Orbit</h3>
+                    <p class="text-gray-400 leading-relaxed mb-6">Multi-spectral imagery captured every 12 hours from
+                        partner satellites, processed through AI to reveal soil moisture, chlorophyll, and stress zones
+                        invisible to the naked eye.</p>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-forest-500"></div>10m resolution imagery
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-forest-500"></div>NDVI, NDWI, EVI indices
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-forest-500"></div>Automated change detection
+                        </li>
+                    </ul>
+                </article>
+
+                <!-- Card 2: Highlighted -->
+                <article
+                    class="feature-card feature-card-highlight rounded-3xl p-8 border border-forest-600/40 relative overflow-hidden">
+                    <div
+                        class="absolute -top-10 -right-10 w-40 h-40 bg-forest-500 rounded-full opacity-20 filter blur-2xl pointer-events-none">
+                    </div>
+                    <div
+                        class="absolute top-5 right-5 px-3 py-1 rounded-full bg-orange-action text-xs font-bold text-white">
+                        Most Popular</div>
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-forest-700 flex items-center justify-center mb-6 border border-forest-600/50">
+                        <svg class="w-7 h-7 text-forest-300" fill="none" stroke="currentColor" stroke-width="1.5"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23-.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+                        </svg>
+                    </div>
+                    <div class="text-xs font-semibold text-forest-400 tracking-widest uppercase mb-3">02 — Bacterial
+                        Detection</div>
+                    <h3 class="text-xl font-bold mb-3">Catch Pathogens Before They Spread</h3>
+                    <p class="text-gray-400 leading-relaxed mb-6">Our deep-learning pathogen classifier identifies
+                        bacterial signatures up to 72 hours before visible symptoms appear — giving farmers a critical
+                        intervention window.</p>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-forest-400"></div>97.3% detection accuracy
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-forest-400"></div>40+ pathogen strains covered
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-forest-400"></div>Instant SMS/app alerts
+                        </li>
+                    </ul>
+                </article>
+
+                <!-- Card 3 -->
+                <article class="feature-card glass-card rounded-3xl p-8 border border-white/5">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-forest-800 flex items-center justify-center mb-6 border border-forest-700/50">
+                        <svg class="w-7 h-7 text-forest-400" fill="none" stroke="currentColor" stroke-width="1.5"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+                        </svg>
+                    </div>
+                    <div class="text-xs font-semibold text-orange-action tracking-widest uppercase mb-3">03 — Yield
+                        Optimization</div>
+                    <h3 class="text-xl font-bold mb-3">Grow More, Waste Less</h3>
+                    <p class="text-gray-400 leading-relaxed mb-6">AgriGuard's predictive engine models weather, soil,
+                        and crop genetics to generate personalized planting calendars, irrigation schedules, and
+                        precision fertilizer maps.</p>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-forest-500"></div>Season-long yield forecasting
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-forest-500"></div>Smart irrigation scheduling
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-forest-500"></div>Precision fertilizer maps
+                        </li>
+                    </ul>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== STATS ===================== -->
+    <section id="stats" class="py-20 relative">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-forest-700 to-transparent">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="stat-card glass-card rounded-2xl p-6 pl-7">
+                    <p class="text-4xl font-black text-white mb-1">1,200<span class="text-forest-500">+</span></p>
+                    <p class="text-sm text-gray-500">Farms monitored globally</p>
+                </div>
+                <div class="stat-card glass-card rounded-2xl p-6 pl-7">
+                    <p class="text-4xl font-black text-white mb-1">97.3<span class="text-forest-500">%</span></p>
+                    <p class="text-sm text-gray-500">Bacterial detection rate</p>
+                </div>
+                <div class="stat-card glass-card rounded-2xl p-6 pl-7">
+                    <p class="text-4xl font-black text-white mb-1">30<span class="text-forest-500">%</span></p>
+                    <p class="text-sm text-gray-500">Average yield improvement</p>
+                </div>
+                <div class="stat-card glass-card rounded-2xl p-6 pl-7">
+                    <p class="text-4xl font-black text-white mb-1">18<span class="text-forest-500"></span></p>
+                    <p class="text-sm text-gray-500">Countries with active coverage</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== CONTACT CTA ===================== -->
+    <section id="contact" class="py-28 relative">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-forest-700 to-transparent">
+        </div>
+
+        <div class="max-w-3xl mx-auto px-6 text-center">
+            <div class="glass-card rounded-3xl p-12 border border-forest-700/30 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-forest-800/40 to-transparent pointer-events-none">
+                </div>
+                <div
+                    class="absolute -bottom-16 -right-16 w-64 h-64 bg-orange-action rounded-full opacity-5 filter blur-3xl pointer-events-none">
+                </div>
+
+                <div class="relative z-10">
+                    <span
+                        class="inline-block px-4 py-1.5 rounded-full border border-forest-600/50 text-xs font-semibold text-forest-400 tracking-widest uppercase mb-6">Early
+                        Access Open</span>
+
+                    <h2 class="text-4xl sm:text-5xl font-black mb-4 leading-tight">
+                        Ready to Transform<br>Your <span class="text-forest-500">Harvest?</span>
+                    </h2>
+
+                    <p class="text-gray-400 mb-10 text-lg">Join 1,200+ farms already growing smarter. Get a personalized
+                        demo tailored to your crops and region.</p>
+
+                    <form id="contact-form" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+                        onsubmit="handleSubmit(event)">
+                        <input type="email" id="email-input" placeholder="your@email.com" required
+                            aria-label="Enter your email address to get started"
+                            class="flex-1 px-4 py-3.5 rounded-xl bg-forest-900/60 border border-forest-700/50 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-forest-500 transition-colors" />
+                        <button type="submit"
+                            class="btn-action px-6 py-3.5 rounded-xl bg-orange-action text-white font-bold text-sm whitespace-nowrap">
+                            Get Started
+                        </button>
+                    </form>
+                    <p class="text-xs text-gray-600 mt-4">No credit card required · Free 30-day trial</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="py-10 border-t border-forest-800/60">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-forest-700 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-forest-400" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2-8 2S12 3 17 8Z" />
+                    </svg>
+                </div>
+                <span class="text-sm font-semibold text-gray-400">AgriGuard <span
+                        class="text-forest-500">AI</span></span>
+            </div>
+            <p class="text-xs text-gray-600">© 2026 AgriGuard AI, Inc. All rights reserved.</p>
+            <div class="flex items-center gap-6 text-xs text-gray-600">
+                <a href="#" class="hover:text-gray-400 transition-colors">Privacy</a>
+                <a href="#" class="hover:text-gray-400 transition-colors">Terms</a>
+                <a href="#" class="hover:text-gray-400 transition-colors">Security</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
